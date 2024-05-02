@@ -8,11 +8,11 @@ export const alertSlice = createSlice({
       loading:false,
    },
    reducers:{
-      showLoading: (state) => {
+    showLoading: (state) => {
          state.loading = true;
    },
    hideLoading: (state) => {
-      state.loading = false;
+        state.loading = false;
    }
  }
 })

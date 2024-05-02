@@ -11,11 +11,12 @@ function Login() {
   const dispatch = useDispatch();
   const onFinishHandler = async (values) => {
     try {
-      dispatch(showLoading())
-      console.log(values)
+      dispatch(showLoading());
+     // console.log(values)
       const res = await axios.post("/api/v1/user/login", values);
-      console.log(res)
-      dispatch(hideLoading())
+      window.location.reload();
+     // console.log(res)
+      dispatch(hideLoading());
       if (res.data.success) {
         localStorage.setItem('token', res.data.token) 
         message.success("Login Successfull");
