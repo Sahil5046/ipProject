@@ -26,7 +26,7 @@ const getUserData = async () => {
         Authorization: "Bearer " + token,
       },
     });
-    console.log("User data:", res.data);
+    // console.log("User data:", res.data);
   } catch (error) {
     console.error("Error fetching user data:", error);
     // You can handle different types of errors here

@@ -1,6 +1,7 @@
 const userModel = require("../models/userModels.js")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const doctorModel = require('../models/doctorModel.js')
 
 
 const loginController = async (req, res) => {
@@ -58,29 +59,63 @@ const registerController = async (req, res) => {
     }
 }
 
-const authController = async(req, res) => {
-    try{
-     const user = await userModel.findById({_id:req.body.userId});
-     user.password = undefined;
-     if(!user){
-      return res.status(200).send({
-      message: 'user not found',
-      success:false
-     })
-    }else{
-     res.status(200).send({
-      success: true,
-      data: user
-     });
+const authController = async (req, res) => {
+    try {
+        const user = await userModel.findById({ _id: req.body.userId });
+        user.password = undefined;
+        if (!user) {
+            return res.status(200).send({
+                message: 'user not found',
+                success: false
+            })
+        } else {
+            res.status(200).send({
+                success: true,
+                data: user
+            });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            message: 'auth error',
+            success: false,
+            error
+        })
     }
-   } catch (error){
-     console.log(error)
-     res.status(500).send({
-        message: 'auth error',
-        success:false,
-        error
-     })
-   }
- };
+};
 
-module.exports = { loginController, registerController, authController }
+
+const applyDoctorController = async (req, res) => {
+    try {
+        const newDoctor = await doctorModel({ ...req.body, status: 'pending' })
+        await newDoctor.save()
+        const adminUser = await userModel.findOne({ isAdmin: false })
+        const notification = adminUser.notification
+        console.log("Notification: ", notification);
+        notification.push({ 
+            type: 'Apply-doctor-request',
+            message: `${newDoctor.firstName} ${newDoctor.lastName} has applied for a doctor account`,
+            data: { 
+                doctorId: newDoctor._id,
+                name: newDoctor.firstName + " " + newDoctor.lastName,
+                onClickPath: '/admin/doctors'
+            }
+        })
+        await userModel.findByIdAndUpdate(adminUser._id, { notification });
+        res.status(201).send({
+            success: true,
+            message: 'Doctor account applied successfully'
+        })
+
+    } catch (error) {
+        console.log("Error: ",error)
+        res.status(500).send({
+            success: false,
+            error,
+            message: 'Error while applying for doctor'
+        })
+    }
+}
+
+
+module.exports = { loginController, registerController, authController, applyDoctorController }
