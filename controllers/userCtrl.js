@@ -117,5 +117,52 @@ const applyDoctorController = async (req, res) => {
     }
 }
 
+// notifications controller
+const getAllNotificationController = async (req, res) => {
+    try {
+        const user = await userModel.findOne({_id: req.body.userId})
+        const seennotification = await user.seennotification
+        const notification = user.notification
+        seennotification.push(...notification)
+        user.notification = []
+        user.seennotification = notification
+        const updateUser = await user.save()
+        res.status(200).send({
+            success: true,
+            message: 'all notifications marked as read' ,
+            data: updateUser
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'error while getting notifications',
+            success: false,
+            error: error
+        })
+    }
+}
 
-module.exports = { loginController, registerController, authController, applyDoctorController }
+// delete notfication
+const deleteAllNotificationController = async (req, res) => {
+    try {
+        const user = await userModel.findOne({_id: req.body.userId})
+        user.notification = []
+        user.seennotification = []
+        const updateUser = await user.save()
+        updateUser.password = undefined
+        res.status(200).send({
+            success: true,
+            message: 'all notifications deleted' ,
+            data: updateUser
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'error while deleting notifications',
+            success: false,
+            error: error
+        })
+    }
+}
+
+module.exports = { loginController, registerController, authController, applyDoctorController, getAllNotificationController, deleteAllNotificationController }
