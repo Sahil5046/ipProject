@@ -35,8 +35,8 @@ const Doctors = () => {
       })
 
       if(res.data.success) {
-        message.success(res.data.message)
         window.location.reload()
+        message.success(res.data.message)
       } 
     } catch (error) {
       console.log(error);
@@ -47,7 +47,7 @@ const Doctors = () => {
   const column = [
     {
       title: 'Name',
-      dataIndex: 'name',
+      dataIndex: 'username',
       render: (text, record) => (
         <span>{record.firstName} {record.lastName} </span>
       )
@@ -66,7 +66,7 @@ const Doctors = () => {
       render: (text, record) => (
         <div className='d-flex'>
           {
-            record.status === 'pending' ? <button className='btn btn-success' onClick={() => handleAccountStatus(record, 'approved')}>Approve</button> : <button className='btn btn-danger'>Reject</button>
+            record.status === 'pending' ? <button className='btn btn-success' onClick={() => handleAccountStatus(record, 'approved')}>Approve</button> : <button className='btn btn-danger' onClick={() => handleAccountStatus(record, 'pending')}>Reject</button>
           }
         </div>
       )
@@ -75,6 +75,7 @@ const Doctors = () => {
   return (
     <Layout>
       <h1>All Doctors</h1>
+      <Table columns={column} dataSource={doctors} />
     </Layout>
   )
 }

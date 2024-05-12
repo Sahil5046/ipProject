@@ -12,6 +12,9 @@ import NotificationPage from "./pages/NotificationPage.jsx";
 import Doctors from "./pages/admin/Doctors.jsx";
 import Users from "./pages/admin/Users.jsx";
 import Profile from "./pages/doctor/Profile.jsx";
+import BookingPage from "./pages/BookingPage.jsx";
+import Appointments from "./pages/Appointments.jsx";
+import DoctorAppointments from "./pages/doctor/DoctorAppointments.jsx";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -76,6 +79,24 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path='/doctor/book-appointment/:doctorId'
+            element={
+              <ProtectedRoute>
+                <BookingPage />
+              </ProtectedRoute>
+            } />
+            <Route path='/appoinments'
+            element={
+              <ProtectedRoute>
+                <Appointments />
+              </ProtectedRoute>
+            } />
+            <Route path='/doctor-appointments'
+            element={
+              <ProtectedRoute>
+                <DoctorAppointments />
               </ProtectedRoute>
             } />
         </Routes>

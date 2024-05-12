@@ -1,37 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
+import { Row } from 'antd';
+import DoctorList from '../components/DoctorList';
 
 const HomePage = () => {
+  const [doctors, setDoctors] = useState([])
 
-// const getUserData = async() => {
-//   try {
-//     const res = await axios.post('/api/v1/user/getUserData',{},{
-//       headers:{
-//         Authorization : "Bearer" + localStorage.getItem('token'),
-//         },});
-//   } catch (error) {
-//     console.log(`error on home page ${error}`);
-//   }
-// };
-
-const getUserData = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error("Token not found in localStorage");
+  const getUserData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error("Token not found in localStorage");
+      }
+      const res = await axios.get('/api/v1/user/getAllDoctors', {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      if(res.data.success){
+        setDoctors(res.data.data);
+      }
+      
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
-    const res = await axios.post('/api/v1/user/getUserData', {}, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-    // console.log("User data:", res.data);
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-    // You can handle different types of errors here
-  }
-};
+  };
 
 useEffect(() => {
    getUserData()
@@ -39,7 +33,13 @@ useEffect(() => {
 
   return (
     <Layout>
-  <div> <h1> Home Page </h1> </div>
+      <div> <h1 className='text-center'> Home Page </h1> 
+      <Row >
+        {doctors && doctors.map(doctor => (
+          <DoctorList doctor={doctor} />
+        ))}
+      </Row>
+      </div>
      </Layout>
   );
 };

@@ -57,7 +57,7 @@ const NotificationPage = () => {
     <Layout>
         <h4 className='p-3 text-center'>Notification page</h4>
         <Tabs>
-            {/* <Tabs.TabPane tab='unRead' key={0}>
+            <Tabs.TabPane tab='unRead' key={0}>
                 <div className="d-flex justify-centent-end">
                     <h4 className='p-2' onClick={handleMarkAllRead}>Mark all read</h4>
                 </div>
@@ -70,8 +70,8 @@ const NotificationPage = () => {
                         </div>
                     ))
                 }
-            </Tabs.TabPane> */}
-            {/* <Tabs.TabPane tab='Read' key={1}>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab='Read' key={1}>
                 <div className="d-flex justify-centent-end">
                     <h4 className='p-2' onClick={handleDeleteAllRead}>Delete all read</h4>
                 </div>
@@ -84,8 +84,8 @@ const NotificationPage = () => {
                         </div>
                     ))
                 }
-            </Tabs.TabPane> */}
-            {[
+            </Tabs.TabPane>
+            {/* {[
                     {
                         key: 'unRead',
                         tab: 'Unread',
@@ -124,7 +124,7 @@ const NotificationPage = () => {
                     }
                 ].map(item => (
                     <Tabs.TabPane key={item.key} tab={item.tab} item={item.content} />
-                ))}
+                ))} */}
         </Tabs>
 
     </Layout>

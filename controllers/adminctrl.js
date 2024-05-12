@@ -1,6 +1,6 @@
 const doctorModel = require('../models/doctorModel')
 const userModel = require('../models/userModels')
-const getAllUsersControllers = async () => {
+const getAllUsersControllers = async (req, res) => {
     try {
         const users = await userModel.find({})
         res.status(200).send({
@@ -17,7 +17,7 @@ const getAllUsersControllers = async () => {
         })
     }
 }
-const getAllDoctorsControllers = async () => {
+const getAllDoctorsControllers = async (req, res) => {
     try {
         const doctors = await doctorModel.find({})
         res.status(200).send({
@@ -37,9 +37,10 @@ const getAllDoctorsControllers = async () => {
 
 const changeAccountStatusController = async (req, res) => {
     try {
-        const { doctorId, status } = req.body
+        const { doctorId, status, userId } = req.body
+        console.log(userId);
         const doctor = await doctorModel.findByIdAndUpdate(doctorId, {status})
-        const user = await userModel.find({_id: doctor.userId})
+        const user = await userModel.find({_id: userId})
         const notification = user.notification
         notification.push({
             type: 'doctor-account-request-updated',
@@ -47,6 +48,7 @@ const changeAccountStatusController = async (req, res) => {
             onClickPath: '/notification'
         })
         user.isDoctor = status === 'approved' ? true : false 
+        console.log(user.isDoctor)
         await userModel.save()
         res.status(200).send({
             success: true,
