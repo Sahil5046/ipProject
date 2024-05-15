@@ -64,7 +64,7 @@ const doctorAppointmentsController = async(req,res) =>{
         res.status(200).send({
             success: true,
             message: "Doctor appointments fetch successfully",
-            data: appoinments,
+            data: appointments,
         })
     } catch (error) {
         console.log(error)

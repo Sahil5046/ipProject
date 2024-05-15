@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../components/Layout';
 import { Form, Row, Col, Input, TimePicker, Button, message } from 'antd'; // Import Row, Col, and Input from Ant Design
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { showLoading, hideLoading } from '../redux/features/alertSlice'
 import axios from 'axios'
-import moment from 'moment'
 
 const ApplyDoctor = () => {
 
@@ -13,9 +12,9 @@ const ApplyDoctor = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   //handle form
   const handleFinish = async(values) => {
-    console.log("From submitted: ", values);
     try {
       dispatch(showLoading())
       const res = await axios.post(
@@ -23,8 +22,8 @@ const ApplyDoctor = () => {
         {...values,
           userId: user._id,
           timings:[
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
+            values.timings[0].format("HH:mm"),
+            values.timings[1].format("HH:mm"),
           ],
         },
         {
@@ -47,6 +46,7 @@ const ApplyDoctor = () => {
       message.error('Something went wrong')
     }
   };
+
 
   return (
     <Layout>
@@ -119,7 +119,6 @@ const ApplyDoctor = () => {
               label="Timings"
               name="timings"
               required
-            //rules={[{required:true}]}
             >
               <TimePicker.RangePicker format="HH:mm" />
             </Form.Item>

@@ -170,7 +170,7 @@ const deleteAllNotificationController = async (req, res) => {
 // get all DOC
 const getAllDoctorsController = async(req,res)=>{
 	try{
-		const doctors = await doctorModel.find({status:'pending'})
+		const doctors = await doctorModel.find({status:'approved'})
 		res.status(200).send({
 			success:true,
 			message:"Doctors Lists Fetched Success",
@@ -198,7 +198,7 @@ const bookAppointmentController = async(req,res) =>{
         const user = await userModel.findOne({_id: req.body.doctorInfo.userId})
         user.notification.push({
             type: "New-appointment-request",
-            message: `A new appointment request from ${req.body.userInfo.name}`,
+            message: `A new appointment request from ${req.body.userInfo.username}`,
             onClickPath: '/user/appointments'
         })
         await user.save();

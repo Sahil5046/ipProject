@@ -64,6 +64,7 @@ const BookingPage = () => {
       dispatch(hideLoading())
       if(res.data.success){
         setDoctors(res.data.data);
+        message.success(res.data.message)
       }
     } catch (error) {
       dispatch(hideLoading())
@@ -106,6 +107,7 @@ const BookingPage = () => {
       {
         doctors && (
           <div>
+            {console.log("Doctor:-", doctors.timings)}
             <h4> Dr.{doctors.firstName} {doctors.lastName}</h4>
             <h4>Fees: {doctors.feesPerConsultation}</h4>
             {/* <h4>Timing: {(doctors.timings[0])} - {doctors.timings[1]}</h4> */}
